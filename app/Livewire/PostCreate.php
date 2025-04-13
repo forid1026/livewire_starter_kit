@@ -33,10 +33,12 @@ class PostCreate extends Component
 
         $this->reset(['title', 'description']);
 
-        Flux::toast('Post created successfully.');
+        
         Flux::modal('create-post')->close();
-
         $this->dispatch('refreshPosts')->to('posts');
+        session()->flash('success', 'Post created successfully.');
+
+        $this->dispatch('flashMessage', 'success', 'Post created successfully.');
 
     }
 }
