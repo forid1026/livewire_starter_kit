@@ -6,7 +6,8 @@
     </div>
 
     <livewire:employee.form />
-    <flux:modal name="delete-post" class="min-w-[22rem]">
+    <livewire:employee.form-edit />
+    <flux:modal name="delete-employee" class="min-w-[22rem]">
         <div class="space-y-6">
             <div>
                 <flux:heading size="lg">Delete employee?</flux:heading>
@@ -24,12 +25,12 @@
                     <flux:button variant="ghost">Cancel</flux:button>
                 </flux:modal.close>
 
-                <flux:button type="submit" variant="danger" >Delete Employee</flux:button>
+                <flux:button type="submit" wire:click="destroyEmployee" variant="danger">Delete Employee</flux:button>
             </div>
         </div>
     </flux:modal>
 
-
+    <livewire:employee.form-view />
 
 
     <div class="relative overflow-x-auto mt-5">
@@ -40,10 +41,16 @@
                         Sl
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Title
+                        Name
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Body
+                        Designation
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Email
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Salary
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Action
@@ -61,10 +68,17 @@
                             {{ $employee->name }}
                         </td>
                         <td class="px-6 py-4">
+                            {{ $employee->designation }}
+                        </td>
+                        <td class="px-6 py-4">
                             {{ $employee->email }}
                         </td>
                         <td class="px-6 py-4">
+                            {{ $employee->basic_salary }}
+                        </td>
+                        <td class="px-6 py-4">
                             <flux:button size="sm" wire:click="edit({{ $employee->id }})">Edit</flux:button>
+                            <flux:button size="sm" wire:click="view({{ $employee->id }})">View</flux:button>
                             <flux:button size="sm" variant="danger" wire:click="delete({{ $employee->id }})">Delete
                             </flux:button>
                         </td>
@@ -72,6 +86,7 @@
                 @endforeach
             </tbody>
         </table>
+        {{ $employees->links() }}
     </div>
 
 </div>
