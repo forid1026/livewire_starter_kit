@@ -6,6 +6,7 @@
         </div>
 
         <flux:select size="sm" placeholder="Choose industry..." wire:model="employee_id">
+            <flux:select.option value="">Select Employee</flux:select.option>
             @foreach ($employees as $emp)
                 <flux:select.option value="{{ $emp->id }}">{{ $emp->name }} </flux:select.option>
             @endforeach
@@ -47,11 +48,10 @@
                 Deduction</button>
         </div>
 
-        <div class="bg-gray-100 p-4 rounded-md">
-            <flux:heading size="lg">Net Salary: {{ $net_salary }} </flux:heading>
-        </div>
+        <flux:heading size="lg">Net Salary: {{ $net_salary }} </flux:heading>
 
-        <button type="submit" class="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700" wire:click="savePayroll">
+        <button type="submit" class="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            wire:click="savePayroll">
             Save Payroll
         </button>
     </div>
