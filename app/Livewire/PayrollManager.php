@@ -5,6 +5,7 @@ namespace App\Livewire;
 
 use App\Models\Employee;
 use App\Models\Payroll;
+use App\Models\PayrollPayment;
 use Flux\Flux;
 use Livewire\Attributes\On;
 use Livewire\Component; 
@@ -13,6 +14,10 @@ use Livewire\Component;
 class PayrollManager extends Component
 {
     public $payrollId;
+    #[On('refreshPayrolls')]
+    public function refreshPayrolls(){
+        
+    }
     public function render()
     {
         return view('livewire.payroll-manager', [                                   
@@ -44,6 +49,12 @@ class PayrollManager extends Component
         Flux::modal('delete-payroll')->close();
         $this->dispatch('refreshPayrolls');
         Flux::toast('Payroll deleted successfully.');
+    }
+
+    public function payment($id)
+    {
+        $this->payrollId = $id;
+        $this->dispatch('paymentPayroll', $id);
     }
 }
                                                                                                                                                                                                                                                                                                         

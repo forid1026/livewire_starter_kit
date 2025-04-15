@@ -103,6 +103,8 @@
                         <td class="px-6 py-4">
                             <flux:button size="sm" wire:click="edit({{ $payroll->id }})">Edit</flux:button>
                             <flux:button size="sm" wire:click="view({{ $payroll->id }})">View</flux:button>
+                            <flux:button size="sm" wire:click="payment({{ $payroll->id }})">Payment
+                            </flux:button>
                             <flux:button size="sm" variant="danger" wire:click="delete({{ $payroll->id }})">Delete
                             </flux:button>
                         </td>
