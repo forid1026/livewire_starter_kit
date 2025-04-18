@@ -7,6 +7,8 @@
         <flux:modal.trigger name="create-payroll">
             <flux:button>Create Payroll</flux:button>
         </flux:modal.trigger>
+
+        <flux:button>Payment List</flux:button>
     </div>
 
     <livewire:payroll-manager.create />
@@ -59,16 +61,10 @@
                         Date
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Basic Salary
+                        Total Salary
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Allowance
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Advance
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Deduction
+                        Paid
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Due Amount
@@ -96,16 +92,10 @@
                         </td>
                         </td>
                         <td class="px-6 py-4">
-                            {{ $payroll->basic_salary }}
+                            {{ $payroll->net_salary }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $payroll->allowance }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ $payroll->advance }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ $payroll->deduction }}
+                            {{number_format( $payroll->net_salary - $payroll->due_salary , 2) }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $payroll->due_salary }}

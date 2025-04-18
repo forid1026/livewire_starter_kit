@@ -24,15 +24,6 @@ class Create extends Component
         $this->calculateNetSalary();
     }
 
-    public function addAllowance()
-    {
-        $this->allowances[] = ['type' => '', 'amount' => 0];
-    }
-
-    public function addDeduction()
-    {
-        $this->deductions[] = ['type' => '', 'amount' => 0];
-    }
 
     public function calculateNetSalary()
     {
@@ -41,8 +32,16 @@ class Create extends Component
         $this->net_salary = ($this->basic_salary + $this->total_allowance) - $this->total_deduction;
     }
 
+    protected $rules = [
+        'employee_id' => 'required',
+        'month' => 'required',
+        'year' => 'required',
+    ];
     public function savePayroll()
     {
+
+        $this->validate();
+
         $payroll = Payroll::create([
             'employee_id' => $this->employee_id,
             'month' => $this->month,
@@ -50,6 +49,7 @@ class Create extends Component
             'basic_salary' => $this->basic_salary,
             'allowance' => $this->total_allowance,
             'deduction' => $this->total_deduction,
+            'due_salary' => $this->net_salary,
             'net_salary' => $this->net_salary,
         ]);
 
@@ -68,7 +68,6 @@ class Create extends Component
         $this->reset();
         session()->flash('success', 'Payroll generated successfully.');
         $this->dispatch('refreshPayrolls');
-     
     }
 
     public function render()

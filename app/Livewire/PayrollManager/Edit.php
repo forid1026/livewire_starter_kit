@@ -63,8 +63,15 @@ class Edit extends Component
         $this->net_salary = ($this->basic_salary + $this->total_allowance) - $this->total_deduction;
     }
 
+    protected $rules = [
+        'employee_id' => 'required',
+        'month' => 'required',
+        'year' => 'required',
+    ];
     public function updatePayroll()
     {
+        $this->validate();
+
         $payroll = Payroll::findOrFail($this->payrollId)->update([
             'employee_id' => $this->employee_id,
             'month' => $this->month,

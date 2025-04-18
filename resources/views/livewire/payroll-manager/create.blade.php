@@ -5,50 +5,36 @@
             <flux:text class="mt-2">Make employees payroll.</flux:text>
         </div>
 
-        <flux:select size="sm" placeholder="Choose industry..." wire:model="employee_id">
+        <flux:select size="sm" placeholder="Choose Employee..." wire:model="employee_id">
             <flux:select.option value="">Select Employee</flux:select.option>
             @foreach ($employees as $emp)
                 <flux:select.option value="{{ $emp->id }}">{{ $emp->name }} </flux:select.option>
             @endforeach
         </flux:select>
 
-        <flux:input label="Month" wire:model="month" placeholder="Month" />
-        <flux:input label="Year" wire:model="year" placeholder="Year" />
-        <flux:input type="number" label="Basic Salary" wire:model="basic_salary" placeholder="Basic Salary" />
+        <flux:select size="sm" placeholder="Choose Month..." wire:model="month">
+            <flux:select.option value="">Select Month</flux:select.option>
+            <flux:select.option value="January">January</flux:select.option>
+            <flux:select.option value="February">February</flux:select.option>
+            <flux:select.option value="March">March</flux:select.option>
+            <flux:select.option value="April">April</flux:select.option>
+            <flux:select.option value="May">May</flux:select.option>
+            <flux:select.option value="June">June</flux:select.option>
+            <flux:select.option value="July">July</flux:select.option>
+            <flux:select.option value="August">August</flux:select.option>
+            <flux:select.option value="September">September</flux:select.option>
+            <flux:select.option value="October">October</flux:select.option>
+            <flux:select.option value="November">November</flux:select.option>
+            <flux:select.option value="December">December</flux:select.option>
+        </flux:select>
 
-        <div>
-            <flux:heading size="lg">Allowances</flux:heading>
-            <div class="space-y-2">
-                @foreach ($allowances as $index => $item)
-                    <div class="grid grid-cols-2 gap-4">
-                        <flux:input type="text" wire:model="allowances.{{ $index }}.type" placeholder="Type"
-                            class="border-gray-300 rounded-md shadow-sm" />
-                        <flux:input type="number" wire:model="allowances.{{ $index }}.amount"
-                            placeholder="Amount" class="border-gray-300 rounded-md shadow-sm" />
-                    </div>
-                @endforeach
-            </div>
-            <button type="button" wire:click="addAllowance" class="mt-2 text-sm text-blue-600 hover:underline">+ Add
-                Allowance</button>
-        </div>
-
-        <div>
-            <flux:heading size="lg">Deductions </flux:heading>
-            <div class="space-y-2">
-                @foreach ($deductions as $index => $item)
-                    <div class="grid grid-cols-2 gap-4">
-                        <flux:input type="text" wire:model="deductions.{{ $index }}.type" placeholder="Type"
-                            class="border-gray-300 rounded-md shadow-sm" />
-                        <flux:input type="number" wire:model="deductions.{{ $index }}.amount"
-                            placeholder="Amount" class="border-gray-300 rounded-md shadow-sm" />
-                    </div>
-                @endforeach
-            </div>
-            <button type="button" wire:click="addDeduction" class="mt-2 text-sm text-blue-600 hover:underline">+ Add
-                Deduction</button>
-        </div>
-
-        <flux:heading size="lg">Net Salary: {{ $net_salary }} </flux:heading>
+        <flux:select size="sm" placeholder="Choose Year..." wire:model="year">
+            <flux:select.option value="">Select Year</flux:select.option>
+            @for ($i = date('Y'); $i >= date('Y') - 10; $i--)
+                <flux:select.option value="{{ $i }}">{{ $i }}</flux:select.option>
+            @endfor
+        </flux:select>
+       
 
         <button type="submit" class="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700"
             wire:click="savePayroll">
