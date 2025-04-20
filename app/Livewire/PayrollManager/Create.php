@@ -55,6 +55,18 @@ class Create extends Component
     ];
     public function savePayroll()
     {
+        // 🔍 Check if already exists
+        $exists = Payroll::where('employee_id', $this->employee_id)
+            ->where('month', $this->month)
+            ->where('year', $this->year)
+            ->exists();
+
+        if ($exists) {
+            $this->addError('employee_id', 'This employee already has a payroll entry for this month and year.');
+            return;
+        }
+        
+
 
         $this->validate();
 
@@ -69,7 +81,7 @@ class Create extends Component
             'net_salary' => $this->net_salary,
         ]);
 
-  
+
         // Close the modal
         Flux::modal('create-payroll')->close();
 

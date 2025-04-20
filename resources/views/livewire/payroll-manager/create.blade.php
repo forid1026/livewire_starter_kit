@@ -5,6 +5,9 @@
             <flux:text class="mt-2">Make employees payroll.</flux:text>
         </div>
 
+        @error('employee_id')   
+            <div class="text-red-500 text-sm mt-2">{{ $message }}</div>
+        @enderror
         <flux:select size="sm" placeholder="Choose Employee..." wire:model="employee_id">
             <flux:select.option value="">Select Employee</flux:select.option>
             @foreach ($employees as $emp)
@@ -12,6 +15,9 @@
             @endforeach
         </flux:select>
 
+        @error('month')   
+            <div class="text-red-500 text-sm mt-2">{{ $message }}</div>
+        @enderror
         <flux:select size="sm" placeholder="Choose Month..." wire:model="month">
             <flux:select.option value="">Select Month</flux:select.option>
             <flux:select.option value="January">January</flux:select.option>
@@ -28,6 +34,9 @@
             <flux:select.option value="December">December</flux:select.option>
         </flux:select>
 
+        @error('year')   
+            <div class="text-red-500 text-sm mt-2">{{ $message }}</div>
+        @enderror
         <flux:select size="sm" placeholder="Choose Year..." wire:model="year">
             <flux:select.option value="">Select Year</flux:select.option>
             @for ($i = date('Y'); $i >= date('Y') - 10; $i--)

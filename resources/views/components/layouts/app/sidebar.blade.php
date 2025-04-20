@@ -17,6 +17,7 @@
                     <flux:navlist.item icon="home" :href="route('posts')" :current="request()->routeIs('posts')" wire:navigate>{{ __('Post') }}</flux:navlist.item>
                     <flux:navlist.item icon="home" :href="route('employees')" :current="request()->routeIs('employees')" wire:navigate>{{ __('Employees') }}</flux:navlist.item>
                     <flux:navlist.item icon="home" :href="route('payroll.manager')" :current="request()->routeIs('payroll-manager')" wire:navigate>{{ __('Payroll Manager') }}</flux:navlist.item>
+                    <flux:navlist.item icon="home" :href="route('payroll.payment.list')" :current="request()->routeIs('payroll-payment-list')" wire:navigate>{{ __('Payroll Payment List') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 

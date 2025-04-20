@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\PayrollManager;
+use App\Livewire\PayrollPaymentManager;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -23,6 +24,8 @@ Route::view('employees', 'employees')
 
 
 Route::get('payroll-manager', PayrollManager::class)->middleware(['auth'])->name('payroll.manager');
+
+Route::get('payroll-payment-list', PayrollPaymentManager::class)->middleware(['auth'])->name('payroll.payment.list');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');

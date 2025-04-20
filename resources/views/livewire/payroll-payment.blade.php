@@ -1,51 +1,7 @@
 <div>
-    <flux:heading size="xl" level="1">{{ __('Payroll Manager') }}</flux:heading>
-    <flux:subheading size="lg" class="mb-6">{{ __('Manage your posts all the posts') }}</flux:subheading>
+    <flux:heading size="xl" level="1">{{ __('Payroll Payment List') }}</flux:heading>
+    <flux:subheading size="lg" class="mb-6">{{ __('Manage your payment for all employees') }}</flux:subheading>
     <flux:separator variant="subtle" />
-
-    <div class="my-3">
-        <flux:modal.trigger name="create-payroll">
-            <flux:button>Create Payroll</flux:button>
-        </flux:modal.trigger>
-
-        <flux:button :href="route('payroll.payment.list')" wire:navigate>Payment List</flux:button>
-    </div>
-
-    <livewire:payroll-manager.create />
-    <livewire:payroll-manager.edit />
-    <livewire:payroll-manager.view />
-    <livewire:payroll-manager.payment />
-
-    <flux:modal name="delete-payroll" class="min-w-[22rem]">
-        <div class="space-y-6">
-            <div>
-                <flux:heading size="lg">Delete payroll?</flux:heading>
-
-                <flux:text class="mt-2">
-                    <p>You're about to delete this payroll.</p>
-                    <p>This action cannot be reversed.</p>
-                </flux:text>
-            </div>
-
-            <div class="flex gap-2">
-                <flux:spacer />
-
-                <flux:modal.close>
-                    <flux:button variant="ghost">Cancel</flux:button>
-                </flux:modal.close>
-
-                <flux:button type="submit" variant="danger" wire:click="deletePayroll">Delete Payroll</flux:button>
-            </div>
-        </div>
-    </flux:modal>
-
-
-
-    @if (session()->has('success'))
-        <div class="mt-4 text-green-600 font-semibold mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
 
     <div class="relative overflow-x-auto mt-5">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -78,7 +34,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($payrolls as $key => $payroll)
+                @foreach ($payment_list as $key => $payroll)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                         <th scope="row"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -121,7 +77,6 @@
                 @endforeach
             </tbody>
         </table>
-        {{ $payrolls->links() }}
+        {{ $payment_list->links() }}
     </div>
-
 </div>

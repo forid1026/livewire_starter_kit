@@ -1,4 +1,4 @@
-<flux:modal name="create-payment" class="md:w-[600px]">
+<flux:modal name="create-payment" class="md:w-[600px]" style="width: 600px">
     <div class="space-y-6">
         <div>
             @if (session()->has('success'))
