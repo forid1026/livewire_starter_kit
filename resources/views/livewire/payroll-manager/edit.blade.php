@@ -1,4 +1,4 @@
-<flux:modal name="edit-payroll" class="md:w-[600px]">
+<flux:modal name="edit-payroll" class="md:w-[600px]"  style="width: 600px;">
     <div class="space-y-6">
         <div>
             <flux:heading size="lg">Update Payroll</flux:heading>

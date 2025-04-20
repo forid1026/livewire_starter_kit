@@ -2,6 +2,8 @@
 
 namespace App\Livewire\PayrollManager;
 
+use App\Models\Allowance;
+use App\Models\Deduction;
 use App\Models\Employee;
 use App\Models\Payroll;
 use Flux\Flux;
@@ -9,14 +11,16 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $employee_id, $month, $year, $basic_salary, $allowances = [], $deductions = [];
-    public $total_allowance = 0, $total_deduction = 0, $net_salary = 0;
+    public $employee_id, $month, $year, $basic_salary;
+    public $payrollId, $total_allowance = 0, $total_deduction = 0, $net_salary = 0, $due_salary;
 
+    // When any of the properties changes, recalculate the net salary
     public function updated($propertyName)
     {
         $this->calculateNetSalary();
     }
 
+    // When the employee_id changes, update the basic salary and recalculate the net salary
     public function updatedEmployeeId()
     {
         $employee = Employee::find($this->employee_id);
@@ -25,11 +29,23 @@ class Create extends Component
     }
 
 
+    // Calculate the net salary
+    // This method is called whenever the user changes any of the properties
+    // It calculates the total allowance and total deduction, and then subtracts the total deduction from the basic salary plus total allowance
     public function calculateNetSalary()
     {
-        $this->total_allowance = collect($this->allowances)->sum('amount');
-        $this->total_deduction = collect($this->deductions)->sum('amount');
+        // Get all the deductions for the current payroll
+        $deduction = Deduction::where('payroll_id', $this->payrollId)->get();
+        // Get all the allowances for the current payroll
+        $allowance = Allowance::where('payroll_id', $this->payrollId)->get();
+        // Calculate the total deduction
+        $this->total_deduction = $deduction->sum('amount');
+        // Calculate the total allowance
+        $this->total_allowance = $allowance->sum('amount');
+        // Calculate the net salary
         $this->net_salary = ($this->basic_salary + $this->total_allowance) - $this->total_deduction;
+        // Set the due salary to the net salary
+        $this->due_salary = $this->net_salary;
     }
 
     protected $rules = [
@@ -49,19 +65,11 @@ class Create extends Component
             'basic_salary' => $this->basic_salary,
             'allowance' => $this->total_allowance,
             'deduction' => $this->total_deduction,
-            'due_salary' => $this->net_salary,
+            'due_salary' => $this->due_salary,
             'net_salary' => $this->net_salary,
         ]);
 
-        foreach ($this->allowances as $allowance) {
-            $payroll->allowances()->create($allowance);
-        }
-
-        foreach ($this->deductions as $deduction) {
-            $payroll->deductions()->create($deduction);
-        }
-
-
+  
         // Close the modal
         Flux::modal('create-payroll')->close();
 

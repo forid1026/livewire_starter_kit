@@ -2,16 +2,19 @@
 
 namespace App\Livewire\PayrollManager;
 
+use App\Models\Allowance;
+use App\Models\Deduction;
 use App\Models\Employee;
 use App\Models\Payroll;
+use App\Models\PayrollPayment;
 use Flux\Flux;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Edit extends Component
 {
-    public $payrollId, $employee_id, $month, $year, $basic_salary, $allowances = [], $deductions = [];
-    public $total_allowance = 0, $total_deduction = 0, $net_salary = 0;
+    public $payrollId, $employee_id, $month, $year, $basic_salary;
+    public $due_salary, $paid_amount, $total_allowance = 0, $total_deduction = 0, $net_salary = 0;
     public function render()
     {
         return view('livewire.payroll-manager.edit', [
@@ -29,8 +32,6 @@ class Edit extends Component
         $this->month = $payroll->month;
         $this->year = $payroll->year;
         $this->basic_salary = $payroll->basic_salary;
-        $this->allowances = $payroll->allowances;
-        $this->deductions = $payroll->deductions;
         Flux::modal('edit-payroll')->show();
     }
 
@@ -46,21 +47,25 @@ class Edit extends Component
         $this->calculateNetSalary();
     }
 
-    public function addAllowance()
-    {
-        $this->allowances[] = ['type' => '', 'amount' => 0];
-    }
 
-    public function addDeduction()
-    {
-        $this->deductions[] = ['type' => '', 'amount' => 0];
-    }
 
     public function calculateNetSalary()
     {
-        $this->total_allowance = collect($this->allowances)->sum('amount');
-        $this->total_deduction = collect($this->deductions)->sum('amount');
-        $this->net_salary = ($this->basic_salary + $this->total_allowance) - $this->total_deduction;
+        // Get all the deductions for the current payroll
+        $deduction = Deduction::where('payroll_id', $this->payrollId)->get();
+        // Get all the allowances for the current payroll
+        $allowance = Allowance::where('payroll_id', $this->payrollId)->get();
+        $paid = PayrollPayment::where('payroll_id', $this->payrollId)->get();
+        // Calculate the total deduction
+        $this->total_deduction = $deduction->sum('amount');
+        // Calculate the total allowance
+        $this->total_allowance = $allowance->sum('amount');
+        // Calculate the paid amount
+        $this->paid_amount = $paid->sum('amount');
+        // Calculate the net salary
+        $this->net_salary = ($this->basic_salary + $this->total_allowance) - $this->total_deduction - $this->paid_amount;
+        // Set the due salary to the net salary
+        $this->due_salary = $this->net_salary;
     }
 
     protected $rules = [
@@ -72,6 +77,8 @@ class Edit extends Component
     {
         $this->validate();
 
+        $this->calculateNetSalary(); // 👈 recalculate before update
+
         $payroll = Payroll::findOrFail($this->payrollId)->update([
             'employee_id' => $this->employee_id,
             'month' => $this->month,
@@ -82,13 +89,6 @@ class Edit extends Component
             'net_salary' => $this->net_salary,
         ]);
 
-        foreach ($this->allowances as $allowance) {
-            $payroll->allowances()->create($allowance);
-        }
-
-        foreach ($this->deductions as $deduction) {
-            $payroll->deductions()->create($deduction);
-        }
 
 
         // Close the modal
@@ -97,6 +97,5 @@ class Edit extends Component
         $this->reset();
         session()->flash('success', 'Payroll updated successfully.');
         $this->dispatch('refreshPayrolls');
-     
     }
 }
