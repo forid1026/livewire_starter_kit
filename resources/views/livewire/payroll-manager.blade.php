@@ -3,7 +3,7 @@
     <flux:subheading size="lg" class="mb-6">{{ __('Manage your posts all the posts') }}</flux:subheading>
     <flux:separator variant="subtle" />
 
-    <div class="my-3">
+    <div class="my-3 mt-3">
         <flux:modal.trigger name="create-payroll">
             <flux:button>Create Payroll</flux:button>
         </flux:modal.trigger>
